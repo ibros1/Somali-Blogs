@@ -15,7 +15,7 @@ const GetOneMember = () => {
 
   useEffect(() => {
     dispatch(getOneMembersFn(+userId!));
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   const user = getOneByOneUserState.data.user;
 
