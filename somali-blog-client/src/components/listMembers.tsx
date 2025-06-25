@@ -1,5 +1,5 @@
 import { type AppDispatch, type RootState } from "@/redux/store";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "./spinner";
 import { getMembersFn } from "@/redux/slices/auth/members";
