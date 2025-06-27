@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { ILoginUser, IRegisterUser } from "../../types/user";
+import { ILoginUser, IRegisterUser, iUpdatedUser } from "../../types/user";
 const prisma = new PrismaClient();
 import argon2 from "argon2";
 import { generateToken } from "../../helpers/jwt";
@@ -238,6 +238,65 @@ export const whoami = async (req: AuthRequest, res: Response) => {
     res.status(500).json({
       isSuccess: false,
       message: "Something went wrong!",
+    });
+  }
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+  try {
+    const data: iUpdatedUser = req.body;
+    if (
+      !data ||
+      !data.id ||
+      !data.email ||
+      !data.fullname ||
+      !data.password ||
+      !data.phone_number
+    ) {
+      res.status(401).json({
+        isSuccess: false,
+        message: "validating error",
+      });
+      return;
+    }
+    const user = await prisma.users.findUnique({
+      where: {
+        id: data.id,
+      },
+    });
+    if (!user) {
+      res.status(404).json({
+        isSuccess: false,
+        message: "User not found",
+      });
+      return;
+    }
+    const hashedPassword = await argon2.hash(data.password);
+
+    const updatedUser = await prisma.users.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        email: data.email,
+        fullname: data.fullname,
+        password: hashedPassword,
+        coverPhoto: data.coverPhoto,
+        profilePhoto: data.profilePhoto,
+        phone_number: data.phone_number,
+      },
+    });
+
+    res.status(200).json({
+      isSuccess: true,
+      message: "Successfully Updated user!",
+      updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      isSuccess: false,
+      message: "something went wrong with the server",
     });
   }
 };

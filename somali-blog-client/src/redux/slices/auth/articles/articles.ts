@@ -25,7 +25,7 @@ export const createArticleFn = createAsyncThunk(
 
     const stateData: RootState = getState() as RootState;
     const token = stateData?.loginSlice?.data?.token;
-    console.log(token);
+
     try {
       const res = await axios.post(`${BASE_API_URL}/articles/new`, data, {
         headers: {
@@ -33,7 +33,6 @@ export const createArticleFn = createAsyncThunk(
         },
       });
 
-      console.log(res.data);
       return res.data;
     } catch (error) {
       if (error instanceof AxiosError) {

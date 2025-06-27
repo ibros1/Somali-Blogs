@@ -18,7 +18,6 @@ const Login = () => {
       password: "",
     },
     onSubmit(values) {
-      console.log("Submitting login form", values);
       const data = {
         email: values.email,
         password: values.password,

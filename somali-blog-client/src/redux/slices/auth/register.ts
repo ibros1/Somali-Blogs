@@ -16,7 +16,6 @@ export const createUserFn = createAsyncThunk(
     try {
       const response = await axios.post(`${BASE_API_URL}/users/new`, data);
 
-      console.log(response.data);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError) {

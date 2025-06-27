@@ -57,6 +57,7 @@ export interface iArticleDetailResponse {
     updated_at: Date;
     user_id: number;
     user: {
+      id: number;
       fullname: string;
       email: string;
       profilePhoto: string;

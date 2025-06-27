@@ -15,7 +15,7 @@ export const getOneMembersFn = createAsyncThunk(
   async (userId: number, { rejectWithValue }) => {
     try {
       const res = await axios.get(`${BASE_API_URL}/articles/users/${userId}`);
-      console.log(res.data);
+
       return res.data;
     } catch (error) {
       if (error instanceof AxiosError) {

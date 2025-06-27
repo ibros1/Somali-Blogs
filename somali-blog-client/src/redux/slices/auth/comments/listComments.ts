@@ -25,7 +25,6 @@ export const listArticleCommentFn = createAsyncThunk(
         `${BASE_API_URL}/comment/article/${data.articleId}?page=${data.page}&size=${data.size}`
       );
 
-      console.log(response.data);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError) {

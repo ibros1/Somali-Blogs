@@ -15,7 +15,7 @@ export const getAllPostsFn = createAsyncThunk(
   async (__, { rejectWithValue }) => {
     try {
       const res = await axios.get(`${BASE_API_URL}/articles/list`);
-      console.log(res.data);
+
       return res.data;
     } catch (error) {
       if (error instanceof AxiosError) {

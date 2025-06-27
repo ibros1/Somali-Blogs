@@ -20,7 +20,7 @@ export const getMyArticlesFn = createAsyncThunk(
       const response = await axios.get(`${BASE_API_URL}/articles/my-articles`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response.data);
+
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError) {

@@ -4,6 +4,7 @@ import {
   getOneUser,
   loginUser,
   registerUser,
+  updateUser,
   whoami,
 } from "../controllers/user.controller";
 import { loginUserSchema, RegistrationSchema } from "../../schema/user";
@@ -15,6 +16,7 @@ router.post("/new", RegistrationSchema, validationMiddleware, registerUser);
 router.post("/login", loginUserSchema, validationMiddleware, loginUser);
 router.get("/list", getAllUsers);
 router.get("/:userId", getOneUser);
+router.put("/update", authenticate, updateUser);
 router.get("/whoami", authenticate, whoami);
 
 export default router;

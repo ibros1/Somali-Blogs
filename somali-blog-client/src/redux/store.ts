@@ -9,11 +9,13 @@ import { listArticleCommentsSlice } from "./slices/auth/comments/listComments";
 import { myArticlesSlice } from "./slices/auth/articles/myArticles";
 import { getMembersSlice } from "./slices/auth/members";
 import { getOneMembersSlice } from "./getOneMember";
+import { updateUserSlice } from "./slices/auth/updateUser";
 
 export const store = configureStore({
   reducer: {
     loginSlice: loginSlice.reducer,
     registerSlice: registerSlice.reducer,
+    updateUserSlice: updateUserSlice.reducer,
     articleSlice: articleSlice.reducer,
     getArticleSlice: getArticleSlice.reducer,
     getArticleDetailSlice: getArticleDetailSlice.reducer,

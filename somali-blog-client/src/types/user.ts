@@ -50,3 +50,33 @@ export interface iRegisterBody {
   password: string;
   confirmPassword: string;
 }
+
+// update user
+
+export interface iUpdatedUserResponse {
+  isSuccess: boolean;
+  message: string;
+  updatedUser: UpdatedUser;
+}
+
+export interface UpdatedUser {
+  id: number;
+  email: string;
+  password: string;
+  fullname: string;
+  phone_number: string;
+  created_at: Date;
+  updated_at: Date;
+  last_login: null;
+  profilePhoto: string;
+  coverPhoto: string;
+}
+export interface iUpdatedUserBody {
+  id: number;
+  email: string;
+  fullname: string;
+  phone_number: string;
+  profilePhoto?: string;
+  coverPhoto?: string;
+  password: string;
+}

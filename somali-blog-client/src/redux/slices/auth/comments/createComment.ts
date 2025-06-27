@@ -31,7 +31,6 @@ export const createCommentFn = createAsyncThunk(
         }
       );
 
-      console.log(response.data);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -47,7 +46,12 @@ export const createCommentFn = createAsyncThunk(
 export const createCommentSlice = createSlice({
   name: "Create comment slice",
   initialState,
-  reducers: {},
+  reducers: {
+    resetCommentFn: (state) => {
+      state.data = {} as iCreatedCommentBodyResponse;
+      (state.loading = false), (state.error = "");
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(createCommentFn.pending, (state) => {
       state.loading = true;
@@ -66,3 +70,5 @@ export const createCommentSlice = createSlice({
     });
   },
 });
+
+export const { resetCommentFn } = createCommentSlice.actions;

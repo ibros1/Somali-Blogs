@@ -74,11 +74,7 @@ const Profile = () => {
                   linkTitle: "My-Profile",
                   to: "/my-account",
                 },
-                {
-                  icon: "bb-icon-books bb-icon-l",
-                  linkTitle: "My-posts",
-                  to: "/my-posts",
-                },
+
                 {
                   icon: "bb-icon-bell bb-icon-l",
                   linkTitle: "Notifications",

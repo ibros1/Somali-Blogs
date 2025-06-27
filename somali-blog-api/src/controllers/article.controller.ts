@@ -155,6 +155,7 @@ export const getOneArticle = async (req: Request, res: Response) => {
       include: {
         user: {
           select: {
+            id: true,
             fullname: true,
             email: true,
             profilePhoto: true,

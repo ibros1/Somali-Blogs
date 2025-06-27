@@ -27,7 +27,7 @@ const ListMembers = () => {
   const users = Array.isArray(membersState.data.user)
     ? membersState.data.user
     : [];
-  console.log(membersState.data);
+
   return !users ? (
     <h1 className="text-center text-gray-500 font-semibold mt-8">
       No users found.

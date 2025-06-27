@@ -58,7 +58,9 @@
     --chart-5: 340 75% 55%;
   }
 }
-
+body {
+  background-color: #f0f2f5;
+}
 .no-tailwind-styles * {
   all: unset; /* Resets all styles */
 }

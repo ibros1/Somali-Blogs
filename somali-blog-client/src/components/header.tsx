@@ -11,7 +11,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-around p-3">
+    <div className="flex justify-around p-3 bg-white shadow-sm border">
       <div
         className="logo cursor-pointer text-2xl font-bold"
         onClick={() => navigate("/")}

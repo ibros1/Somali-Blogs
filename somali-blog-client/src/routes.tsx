@@ -8,9 +8,11 @@ import Signup from "./pages/auth/signUp";
 import Articles from "./pages/articles/Articles";
 import ArticleDetail from "./pages/articles/articleDetail";
 import MyProfile from "./components/myProfile";
-import MyArticlesPage from "./pages/articles/MyArticlesPage";
+
 import ListMembers from "./components/listMembers";
 import GetOneMember from "./components/getOneMember";
+import Notification from "./components/notifications";
+import Settings from "./components/settings";
 
 // import MyPosts from "./pages/articles/myPosts";
 
@@ -22,6 +24,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: "/my-notifications",
+        element: <Notification />,
+      },
+      {
+        path: "/my-settings",
+        element: <Settings />,
       },
       {
         path: "/posts",
@@ -51,10 +61,6 @@ export const router = createBrowserRouter([
       {
         path: "/members/:userId",
         element: <GetOneMember />,
-      },
-      {
-        path: "my-posts",
-        element: <MyArticlesPage />,
       },
 
       {

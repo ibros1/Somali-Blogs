@@ -4,7 +4,10 @@ import * as yup from "yup";
 import { Textarea } from "./ui/textarea";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootState } from "@/redux/store";
-import { createCommentFn } from "@/redux/slices/auth/comments/createComment";
+import {
+  createCommentFn,
+  resetCommentFn,
+} from "@/redux/slices/auth/comments/createComment";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -17,7 +20,6 @@ const Comments = ({ articleId }: { articleId: number }) => {
   const logInstate = useSelector((state: RootState) => state.loginSlice);
 
   const dispatch = useDispatch<AppDispatch>();
-
   const formik = useFormik({
     initialValues: {
       comment: "",
@@ -27,7 +29,6 @@ const Comments = ({ articleId }: { articleId: number }) => {
         articleId: Number(articleId),
         comment: values.comment,
       };
-
       dispatch(createCommentFn(data));
       resetForm();
     },
@@ -38,16 +39,19 @@ const Comments = ({ articleId }: { articleId: number }) => {
     }),
   });
 
-  // 🧠 show toast only when there's an error
   useEffect(() => {
-    if (getCreateCommentState.error) {
-      toast.error(getCreateCommentState.error);
-    }
+    // if (getCreateCommentState.error) {
+    //   toast.error(getCreateCommentState.error);
+    // }
     if (getCreateCommentState.data.isSuccess) {
       toast.success("Successfully Commented!");
       location.reload();
+
+      dispatch(resetCommentFn());
     }
-  }, []);
+  }, [getCreateCommentState.data]);
+
+  // 🧠 show toast only when there's an error
 
   return !logInstate.data.isSuccess ? (
     <Link to={"/auth/login"}> Please login to comment</Link>

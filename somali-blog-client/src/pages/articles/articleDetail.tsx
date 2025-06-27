@@ -3,12 +3,15 @@ import { getOneArticleFn } from "@/redux/slices/auth/articles/getOneArticle";
 import type { AppDispatch, RootState } from "@/redux/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaThumbsUp, FaCommentDots } from "react-icons/fa";
 import Comments from "@/components/comments";
 import ListComments from "@/components/listArticleComments";
 import { listArticleCommentFn } from "@/redux/slices/auth/comments/listComments";
-
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
+dayjs().format();
 const ArticleDetail = () => {
   const { articleId } = useParams();
   const dipatch = useDispatch<AppDispatch>();
@@ -28,7 +31,7 @@ const ArticleDetail = () => {
   const getArticleDetailState = useSelector(
     (state: RootState) => state.getArticleDetailSlice
   );
-
+  const navigate = useNavigate();
   if (getArticleDetailState.loading) return <Spinner />;
   if (getArticleDetailState.error)
     return (
@@ -47,17 +50,32 @@ const ArticleDetail = () => {
             "/default-avatar.png"
           }
           alt="Author Avatar"
-          className="w-12 h-12 rounded-full object-cover mr-3"
+          className="w-12 h-12 rounded-full object-cover mr-3 cursor-pointer"
+          onClick={() =>
+            navigate(
+              `/members/${getArticleDetailState?.posts?.article?.user.id}`
+            )
+          }
         />
-        <div>
-          <h2 className="text-lg font-semibold">
+        <div className="">
+          <h2
+            className="text-md font-semibold cursor-pointer"
+            onClick={() =>
+              navigate(
+                `/members/${getArticleDetailState?.posts?.article?.user.id}`
+              )
+            }
+          >
             {getArticleDetailState.posts?.article?.user?.fullname ||
               "Anonymous"}
           </h2>
-          <p className="text-sm text-gray-500">
-            {new Date(
-              getArticleDetailState.posts?.article?.created_at
-            ).toLocaleString()}
+
+          <p className="text-[12px] text-[#65686C] cursor-auto ">
+            {" "}
+            {dayjs(getArticleDetailState.posts?.article?.updated_at).fromNow(
+              true
+            )}
+            <span className="bb-icon-stopwatch "></span>{" "}
           </p>
         </div>
       </div>

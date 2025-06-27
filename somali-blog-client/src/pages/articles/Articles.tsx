@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 const Articles = () => {
   const dispatch = useDispatch<AppDispatch>();
   const articleState = useSelector((state: RootState) => state.articleSlice);
+  const loginState = useSelector((state: RootState) => state.loginSlice);
   const toastId = "create post";
   const navigate = useNavigate();
 
@@ -61,8 +62,13 @@ const Articles = () => {
 
   // console.log(title, content, isPublished);
   console.log("isPublished:", formik.values.isPublished);
-  return (
-    <div className="w-[80%] mx-auto md:w-[40%] my-16 border p-6 rounded-md shadow-sm ">
+  return !loginState.data.user ? (
+    <div className="text-red-600 font-bold flex justify-center items-center text-center min-h-screen text-4xl">
+      {" "}
+      Please Login First{" "}
+    </div>
+  ) : (
+    <div className="w-[80%] mx-auto md:w-[40%] my-16 border p-6 rounded-md shadow-sm bg-white ">
       <h1 className="text-4xl font-bold">Create new article</h1>
       <form action="" className="my-4" onSubmit={formik.handleSubmit}>
         <div className="inputContainer my-2">

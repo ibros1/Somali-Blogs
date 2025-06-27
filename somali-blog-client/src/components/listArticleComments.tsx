@@ -2,7 +2,7 @@ import type { RootState } from "@/redux/store";
 import { Reply, ThumbsUp } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import * as dayjs from "dayjs";
 const ListComments = () => {
   const navigate = useNavigate();
   const listArticleCommentsState = useSelector(
@@ -14,13 +14,19 @@ const ListComments = () => {
   if (listArticleCommentsState.error)
     return <h1 className="font-bold">{listArticleCommentsState.error}</h1>;
 
-  const comments = listArticleCommentsState.data?.comments;
+  const comments = listArticleCommentsState.data?.comments ?? [];
+  const sortedComments = comments
+    .slice()
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
 
-  return !comments ? (
-    <div className="text-red-600"> No comments yet </div>
+  return comments.length === 0 ? (
+    <div className="text-gray-500 text-sm italic px-4">No comments yet.</div>
   ) : (
     <div className="space-y-4 p-4">
-      {comments.map((comment) => (
+      {sortedComments.map((comment) => (
         <div
           key={comment.id}
           className="border rounded-xl p-4 shadow-sm hover:shadow-md transition duration-300 bg-white"

@@ -21,8 +21,7 @@ export const loginFunction = createAsyncThunk(
   async (data: iLoginBody, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${BASE_API_URL}/users/login`, data);
-      console.log(response.data);
-      console.log(response);
+
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -48,6 +47,13 @@ export const loginSlice = createSlice({
       localStorage.removeItem("userData");
       // If you need to navigate after logout, do it in your component using useNavigate()
     },
+    updateLoggedInUser: (state, action) => {
+      state.data.user = {
+        ...state.data.user,
+        ...action.payload,
+      };
+      localStorage.setItem("userData", JSON.stringify(state.data));
+    },
   },
 
   extraReducers: (builder) => {
@@ -70,4 +76,4 @@ export const loginSlice = createSlice({
   },
 });
 
-export const { logOut } = loginSlice.actions;
+export const { logOut, updateLoggedInUser } = loginSlice.actions;
