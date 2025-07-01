@@ -1,20 +1,28 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { useNavigate } from "react-router-dom";
+import { FaRegThumbsUp, FaRegCommentDots, FaShare } from "react-icons/fa";
 
 const MyArticles = () => {
   const myArticlesState = useSelector(
     (state: RootState) => state.myArticlesSlice
   );
   const articles = myArticlesState.data.articles;
+  const sortedArticles = (articles ?? [])
+    .slice()
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+
   const navigate = useNavigate();
+
   return (
     <div className="max-w-3xl mx-auto px-4 mt-10 space-y-6">
-      {articles.map((article) => (
+      {sortedArticles.map((article) => (
         <div
           key={article.id}
-          className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300"
-          onClick={() => navigate(`/articles/${article.id}`)}
+          className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
         >
           {/* Header */}
           <div className="flex items-center gap-4 p-4 border-b">
@@ -34,12 +42,16 @@ const MyArticles = () => {
           </div>
 
           {/* Body */}
-          <div className="p-4">
+          <div
+            className="p-4 cursor-pointer"
+            onClick={() => navigate(`/articles/${article.id}`)}
+          >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
               {article.title}
             </h2>
+
             <div
-              className="text-gray-700 leading-normal"
+              className="text-gray-700 leading-relaxed"
               dangerouslySetInnerHTML={{
                 __html: article.content
                   .replace(
@@ -54,13 +66,23 @@ const MyArticles = () => {
             ></div>
 
             <div className="mt-4">
-              <a
-                href={`/articles/${article.id}`}
-                className="text-indigo-600 text-sm font-medium hover:underline"
-              >
+              <span className="text-indigo-600 text-sm font-medium hover:underline">
                 Read more →
-              </a>
+              </span>
             </div>
+          </div>
+
+          {/* Footer with Actions */}
+          <div className="border-t flex justify-between items-center text-gray-500 px-4 py-3 text-sm">
+            <button className="flex items-center gap-1 hover:text-blue-600 transition">
+              <FaRegThumbsUp className="text-lg" /> Like
+            </button>
+            <button className="flex items-center gap-1 hover:text-blue-600 transition">
+              <FaRegCommentDots className="text-lg" /> Comment
+            </button>
+            <button className="flex items-center gap-1 hover:text-blue-600 transition">
+              <FaShare className="text-lg" /> Share
+            </button>
           </div>
         </div>
       ))}

@@ -105,7 +105,7 @@ const MyProfileContainer = () => {
       Please login First.....
     </p>
   ) : (
-    <div>
+    <div className="bg-white border shadow-sm mx-8 my-4 py-6 rounded-lg">
       <div className="relative w-full h-64 ">
         {/* Cover photo with overlay */}
         <div className="absolute inset-0 rounded-lg bg-black/20 w-[90%] flex flex-col justify-center mx-auto">
@@ -136,8 +136,18 @@ const MyProfileContainer = () => {
           </div>
 
           {/* Role Badge */}
-          <div className="-mt-4 ml-1.5 z-50 bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full shadow-sm">
-            {"Member"}
+          <div className="absolute left-1/2 transform -translate-x-1/2 mt-[7.1rem] z-10">
+            <span
+              className={`inline-flex items-center gap-2 px-6 py-1 rounded-full text-xs font-semibold shadow-sm transition-all
+      ${
+        user.role === "admin"
+          ? "bg-gradient-to-r from-blue-600 to-blue-400 text-white"
+          : "bg-gradient-to-r from-pink-500 to-red-400 text-white"
+      }
+    `}
+            >
+              {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+            </span>
           </div>
         </div>
       </div>

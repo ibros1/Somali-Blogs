@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import { AuthRequest } from '../types/request';
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import { AuthRequest } from "../types/request";
 
 export const authenticate = async (
   req: AuthRequest,
@@ -13,19 +13,19 @@ export const authenticate = async (
     if (!authHeader) {
       res.status(401).json({
         isSuccess: false,
-        message: 'Unauthorized (NO AUTHHEADER)'
+        message: "Unauthorized (NO AUTHHEADER)",
       });
 
       return;
     }
 
     // Bearer token
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
 
     if (!token) {
       res.status(401).json({
         isSuccess: false,
-        message: 'Unauthorized (NO TOKEN)'
+        message: "Unauthorized (NO TOKEN)",
       });
 
       return;
@@ -36,7 +36,7 @@ export const authenticate = async (
     if (!result) {
       res.status(401).json({
         isSuccess: false,
-        message: 'Unauthorized (NO RESULT)'
+        message: "Unauthorized (NO RESULT)",
       });
 
       return;
@@ -49,7 +49,7 @@ export const authenticate = async (
     console.log(error);
     res.status(401).json({
       isSuccess: false,
-      message: 'Unauthorized'
+      message: "Unauthorized",
     });
   }
 };

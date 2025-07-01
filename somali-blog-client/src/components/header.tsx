@@ -9,14 +9,17 @@ import { ModeToggle } from "./darkMode";
 const Header = () => {
   const loginState = useSelector((state: RootState) => state.loginSlice);
   const navigate = useNavigate();
+  const logo = "Somali Blog";
+  const shortLogo = logo.split(" ")[0];
 
   return (
     <div className="flex justify-around p-3 bg-white shadow-sm border">
       <div
-        className="logo cursor-pointer text-2xl font-bold"
+        className="logo cursor-pointer text-sm md:text-2xl font-bold"
         onClick={() => navigate("/")}
       >
-        Somali Blogs
+        <span className="md:hidden flex items-center py-3"> {shortLogo} </span>
+        <span className="hidden md:flex"> {logo}</span>
       </div>
 
       {loginState.data.isSuccess ? (

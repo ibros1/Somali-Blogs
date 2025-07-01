@@ -4,6 +4,7 @@ import {
   getOneUser,
   loginUser,
   registerUser,
+  updateRole,
   updateUser,
   whoami,
 } from "../controllers/user.controller";
@@ -18,5 +19,6 @@ router.get("/list", getAllUsers);
 router.get("/:userId", getOneUser);
 router.put("/update", authenticate, updateUser);
 router.get("/whoami", authenticate, whoami);
+router.put("/role/update", updateRole);
 
 export default router;

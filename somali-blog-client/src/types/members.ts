@@ -3,6 +3,7 @@ export interface iUser {
   email: string;
   fullname: string;
   phone_number: string;
+  role: string;
   profilePhoto: string;
   coverPhoto: string;
   created_at: Date;
@@ -48,6 +49,7 @@ export interface User {
   password: string;
   fullname: string;
   phone_number: string;
+  role: string;
   profilePhoto: string;
   coverPhoto: string;
   created_at: Date;

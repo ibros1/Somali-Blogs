@@ -25,7 +25,7 @@ const GetOneMember = () => {
   }
 
   if (!getOneByOneUserState.data) {
-    return <h2 className="text-red-600"> This User doesn't exist </h2>;
+    return <h2 className="text-red-600"> This User is not valid!!!! </h2>;
   }
 
   const fallbackUser = user ||
@@ -35,7 +35,12 @@ const GetOneMember = () => {
       coverPhoto: coverPhoto,
     };
 
-  return (
+  return !user ? (
+    <div className="font-semibold my-auto items-center text-3xl text-center flex justify-center min-h-screen">
+      {" "}
+      This user is not valid!!{" "}
+    </div>
+  ) : (
     <div className="mx-8 my-2">
       <div className="bg-white py-4 rounded-lg shadow-sm">
         <div className="relative w-full h-64 ">
@@ -67,8 +72,18 @@ const GetOneMember = () => {
             </div>
 
             {/* Role Badge */}
-            <div className="-mt-4 ml-1.5 z-50 bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full shadow-sm">
-              {"Member"}
+            <div className="absolute left-1/2 transform -translate-x-1/2 mt-[7.1rem] z-10">
+              <span
+                className={`inline-flex items-center gap-2 px-6 py-1 rounded-full text-xs font-semibold shadow-sm transition-all
+      ${
+        user.role === "admin"
+          ? "bg-gradient-to-r from-blue-600 to-blue-400 text-white"
+          : "bg-gradient-to-r from-pink-500 to-red-400 text-white"
+      }
+    `}
+              >
+                {user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1)}
+              </span>
             </div>
           </div>
         </div>

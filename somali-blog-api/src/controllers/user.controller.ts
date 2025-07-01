@@ -1,6 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { ILoginUser, IRegisterUser, iUpdatedUser } from "../../types/user";
+import {
+  ILoginUser,
+  IRegisterUser,
+  iUpdatedRole,
+  iUpdatedUser,
+} from "../../types/user";
 const prisma = new PrismaClient();
 import argon2 from "argon2";
 import { generateToken } from "../../helpers/jwt";
@@ -297,6 +302,43 @@ export const updateUser = async (req: Request, res: Response) => {
     res.status(500).json({
       isSuccess: false,
       message: "something went wrong with the server",
+    });
+  }
+};
+
+export const updateRole = async (req: Request, res: Response) => {
+  try {
+    const data = req.body as iUpdatedRole;
+    const user = await prisma.users.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
+    if (!user) {
+      res.status(404).json({
+        isSuccess: false,
+        message: "User not found!",
+      });
+      return;
+    }
+    const updatedUserRole = await prisma.users.update({
+      where: {
+        email: data.email,
+      },
+      data: {
+        role: data.role,
+      },
+    });
+
+    res.status(200).json({
+      isSuccess: true,
+      message: "Successfully updated role",
+      updatedUserRole,
+    });
+  } catch (error) {
+    res.status(500).json({
+      isSuccess: false,
+      message: "server error",
     });
   }
 };

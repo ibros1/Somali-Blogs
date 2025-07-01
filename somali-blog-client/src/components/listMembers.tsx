@@ -37,33 +37,91 @@ const ListMembers = () => {
       {users.map((user, index: number) => (
         <div
           key={index}
-          className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 border border-gray-100 p-5 flex flex-col items-center text-center"
+          className="relative bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col items-center text-center hover:shadow-md transition-all"
         >
-          <img
-            src={user.profilePhoto || "/default-avatar.png"}
-            alt="profilePhoto"
-            className="w-20 h-20 rounded-full object-cover border-4 border-blue-100 shadow-sm cursor-pointer"
-            onClick={() => navigate(`/members/${user.id}`)}
-          />
+          {/* Ellipsis / Menu */}
+          <div
+            className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 cursor-pointer text-2xl bb-icon-ellipsis-h
+"
+          ></div>
+
+          {/* Profile Image + Status Dot */}
+          <div className="relative">
+            <img
+              src={user.profilePhoto || "/default-avatar.png"}
+              alt="profilePhoto"
+              className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md"
+              onClick={() => navigate(`/members/${user.id}`)}
+            />
+            {/* Online Dot */}
+            <span className="absolute bottom-20 right-4 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+          </div>
+
+          {/* Role Badge */}
+          <div className="-mt-3 z-10">
+            <span
+              className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                user.role === "admin"
+                  ? "bg-purple-600 text-white"
+                  : user.role === "student"
+                  ? "bg-green-500 text-white"
+                  : user.role === "teacher"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300 text-gray-800"
+              }`}
+            >
+              {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+            </span>
+          </div>
+
+          {/* Name */}
           <h3
-            className="mt-4 font-semibold text-lg text-gray-800 cursor-pointer"
+            className="mt-3 text-lg font-semibold text-gray-800 cursor-pointer hover:text-blue-600"
             onClick={() => navigate(`/members/${user.id}`)}
           >
             {user.fullname}
           </h3>
+
+          {/* Joined Date */}
           <p className="text-sm text-gray-500">
-            @{user.fullname.split(" ")[0]}
-          </p>
-          <p className="text-xs mt-2 text-gray-600">
-            {user.email || "user@email.com"}
+            Joined{" "}
+            {new Date(user.created_at).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+            })}
           </p>
 
-          <div className="flex gap-3 mt-4">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-full flex items-center gap-2">
-              <FaUserPlus size={14} /> Connect
+          {/* Followers */}
+          <p className="text-sm text-gray-500 mt-1">
+            <span className="font-medium text-gray-800">
+              {Math.floor(Math.random() * 20 + 5)}
+            </span>{" "}
+            followers
+          </p>
+
+          {/* Message Button */}
+          <div className="btns flex gap-2">
+            <button
+              className="mt-4 border border-gray-300 hover:bg-blue-400 text-gray-800 transition-all duration-900 hover:text-white text-sm px-5 py-2 rounded-full flex items-center justify-center gap-2 "
+              onClick={() => alert(`Messaging ${user.fullname}`)}
+            >
+              <FaUserPlus size={14} /> Add Friend
             </button>
-            <button className="bg-gray-100 hover:bg-gray-200 text-sm px-4 py-1.5 rounded-full flex items-center gap-2">
-              <FaEnvelope size={14} /> Message
+            <button
+              className="mt-4 border border-gray-300 hover:bg-gray-200 duration-900 text-gray-800 hover:text-black  text-sm px-5 py-2 rounded-full flex items-center justify-center gap-2 transition-all"
+              onClick={() => alert(`Messaging ${user.fullname}`)}
+            >
+              <FaEnvelope size={14} /> Send Message
+            </button>
+          </div>
+
+          {/* Optional Footer Icons */}
+          <div className="flex w-full border-t mt-5 pt-3 justify-around text-gray-500 text-xl">
+            <button className="hover:text-blue-500 transition">
+              <i className="fas fa-bullhorn" />
+            </button>
+            <button className="hover:text-blue-500 transition">
+              <i className="fas fa-user-plus" />
             </button>
           </div>
         </div>

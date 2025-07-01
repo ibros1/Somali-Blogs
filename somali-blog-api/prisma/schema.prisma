@@ -6,6 +6,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+enum ROLE {
+  user
+  admin
+}
 
 model users {
   id           Int        @id @default(autoincrement())
@@ -16,6 +20,7 @@ model users {
   created_at   DateTime   @default(now())
   updated_at   DateTime   @updatedAt
   last_login   DateTime?
+  role ROLE @default(user)
   profilePhoto String?
   coverPhoto   String?
   articles     article[]

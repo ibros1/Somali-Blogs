@@ -1,3 +1,4 @@
+import { ROLE } from "@prisma/client";
 export interface IRegisterUser {
   email: string;
   fullname: string;
@@ -21,4 +22,9 @@ export interface iUpdatedUser {
   profilePhoto?: string;
   coverPhoto?: string;
   password: string;
+}
+
+export interface iUpdatedRole {
+  email: string;
+  role: ROLE;
 }

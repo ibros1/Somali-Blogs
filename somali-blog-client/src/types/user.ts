@@ -9,6 +9,8 @@ export interface User {
   email: string;
   fullname: string;
   phone_number: string;
+  role: string;
+
   profilePhoto: string;
   coverPhoto: string;
   created_at: Date;
@@ -33,6 +35,7 @@ export interface NewUser {
   email: string;
   password: string;
   fullname: string;
+  role: string;
   phone_number: string;
   profilePhoto: string;
   coverPhoto: string;
