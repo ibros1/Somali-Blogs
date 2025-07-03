@@ -84,7 +84,7 @@ const ArticleDetail = () => {
             {article.user?.fullname || "Anonymous"}
           </h2>
           <p className="text-[12px] text-[#65686C] cursor-auto">
-            {dayjs(article.updated_at).fromNow(true)}
+            {`${dayjs(article.updated_at).fromNow(true)} ago.`}
           </p>
         </div>
       </div>

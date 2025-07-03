@@ -88,10 +88,13 @@ const Articles = () => {
         <div className="inputContainer">
           <label htmlFor="">Content</label>
           <TextEditor
-            setContent={(value: string) => {
-              formik.setFieldValue("content", value);
+            value={formik.values.content}
+            onChange={(val) => {
+              formik.setFieldTouched("content", true, true);
+              formik.setFieldValue("content", val);
             }}
           />
+
           <h4 className="text-red-600">
             {" "}
             {formik.touched.content && formik.errors.content}{" "}

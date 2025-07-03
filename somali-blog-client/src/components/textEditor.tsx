@@ -1,14 +1,19 @@
 import { Editor } from "@tinymce/tinymce-react";
 
-const TextEditor = ({
-  setContent,
-}: {
-  setContent: (content: string) => void;
-}) => {
+interface TextEditorProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+export default function TextEditor({ value, onChange }: TextEditorProps) {
   return (
     <Editor
-      apiKey="j85r9fpzuitm53ac24bbzarjw6zini0r84kbw4kr7d4i9oxp"
+      apiKey="ekhzscaf9iwd6xfj1z8eg8maszcvp7len7si9yybzt6mb5t0"
+      value={value}
+      onEditorChange={onChange}
       init={{
+        height: 300,
+        menubar: false,
         plugins: [
           // Core editing features
           "anchor",
@@ -25,7 +30,7 @@ const TextEditor = ({
           "visualblocks",
           "wordcount",
           // Your account includes a free trial of TinyMCE premium features
-          // Try the most popular premium features until Jun 30, 2025:
+          // Try the most popular premium features until Jul 15, 2025:
           "checklist",
           "mediaembed",
           "casechange",
@@ -61,15 +66,7 @@ const TextEditor = ({
           { value: "First.Name", title: "First Name" },
           { value: "Email", title: "Email" },
         ],
-        // ai_request: (request, respondWith) =>
-        //   respondWith.string(() =>
-        //     Promise.reject("See docs to implement AI Assistant")
-        //   ),
       }}
-      initialValue=""
-      onEditorChange={(content) => setContent(content)}
     />
   );
-};
-
-export default TextEditor;
+}

@@ -64,3 +64,7 @@ body {
 .no-tailwind-styles * {
   all: unset; /* Resets all styles */
 }
+
+* {
+  list-style: none;
+}

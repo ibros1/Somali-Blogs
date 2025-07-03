@@ -186,7 +186,7 @@ export const getOneArticle = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteArticle = async (req: Request, res: Response) => {
+export const deleteArticle = async (req: AuthRequest, res: Response) => {
   try {
     const { articleId } = req.params;
     if (!articleId) {
@@ -210,9 +210,20 @@ export const deleteArticle = async (req: Request, res: Response) => {
       return;
     }
 
+    // middleWare
+
     const deletedPost = await prisma.article.delete({
       where: {
         id: +articleId,
+      },
+      include: {
+        user: {
+          select: {
+            fullname: true,
+            email: true,
+            role: true,
+          },
+        },
       },
     });
 

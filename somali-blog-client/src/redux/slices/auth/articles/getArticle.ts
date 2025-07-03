@@ -31,7 +31,13 @@ export const getAllPostsFn = createAsyncThunk(
 export const getArticleSlice = createSlice({
   name: "Get Article Slice",
   initialState,
-  reducers: {},
+  reducers: {
+    resetGetArticles: (state) => {
+      state.data = {} as iGetArticlesResponse;
+      state.loading = false;
+      state.error = "";
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getAllPostsFn.pending, (state) => {
       state.loading = true;
@@ -50,5 +56,7 @@ export const getArticleSlice = createSlice({
     });
   },
 });
+
+export const { resetGetArticles } = getArticleSlice.actions;
 
 export default getArticleSlice.reducer;

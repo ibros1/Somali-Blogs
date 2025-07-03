@@ -5,9 +5,27 @@ import toast from "react-hot-toast";
 import { FaRegThumbsUp, FaRegCommentDots } from "react-icons/fa";
 import DOMPurify from "dompurify";
 import type { RootState, AppDispatch } from "../redux/store";
-import { getAllPostsFn } from "@/redux/slices/auth/articles/getArticle";
+import {
+  getAllPostsFn,
+  resetGetArticles,
+} from "@/redux/slices/auth/articles/getArticle";
 import { createArticleFn } from "@/redux/slices/auth/articles/articles";
-import PostModal from "@/components/postModal";
+
+import HomePostModal from "../components/homePostsModal";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../components/ui/popover";
+import {
+  deleteArticleFn,
+  resetDeleteArticle,
+} from "@/redux/slices/auth/articles/deleteArticle";
+
+dayjs.extend(relativeTime);
 
 interface Article {
   title: string;
@@ -28,10 +46,14 @@ const HomePage = () => {
     {}
   );
 
-  const articleState = useSelector((state: RootState) => state.getArticleSlice);
+  const deleteArticleState = useSelector(
+    (state: RootState) => state.deleteArticleSlice
+  );
+
   const postArticleState = useSelector(
     (state: RootState) => state.articleSlice
   );
+  const articleState = useSelector((state: RootState) => state.getArticleSlice);
   const sortedArticleState = (articleState?.data?.articles ?? [])
     .slice()
     .sort(
@@ -41,17 +63,28 @@ const HomePage = () => {
 
   const logInState = useSelector((state: RootState) => state.loginSlice);
   const user = logInState.data.user;
-
+  const [openPopoverId, setOpenPopoverId] = useState<number | null>(null);
   useEffect(() => {
-    if (user) dispatch(getAllPostsFn());
+    if (user) {
+      dispatch(getAllPostsFn());
+    }
   }, [dispatch, user]);
 
   useEffect(() => {
+    if (postArticleState.error) {
+      toast.error(
+        "You have to post the content with the requirements at least 8 characters"
+      );
+      return;
+    }
     if (postArticleState.posts.isSuccess) {
       toast.success("Successfully created post");
       setYourMind("");
+      // dispatch(resetGetArticles());
+      // dispatch(getAllPostsFn());
+      location.reload();
     }
-  }, [postArticleState.posts.isSuccess]);
+  }, [postArticleState]);
 
   const postHandler = (e: FormEvent) => {
     e.preventDefault();
@@ -64,6 +97,27 @@ const HomePage = () => {
       })
     );
   };
+
+  const deletePostshandler = (id: number) => {
+    console.log("deleted post!!");
+    console.log(id);
+    dispatch(deleteArticleFn(id));
+  };
+
+  useEffect(() => {
+    if (deleteArticleState.error) {
+      toast.error(deleteArticleState.error);
+      dispatch(resetDeleteArticle());
+      return;
+    }
+    if (deleteArticleState.data.isSuccess) {
+      toast.success("Successfully Deleted Post");
+      dispatch(resetDeleteArticle());
+      dispatch(getAllPostsFn());
+
+      return;
+    }
+  }, [deleteArticleState, dispatch]);
 
   const toggleTitle = (id: string) => {
     setExpandedTitles((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -236,16 +290,47 @@ const HomePage = () => {
                         {article.user.fullname}
                       </h4>
                       <p className="text-xs text-gray-500">
-                        {new Date(article.created_at).toLocaleString()}
+                        {`${dayjs(article.created_at).toNow(true)} ago`}
                       </p>
                     </div>
                     <div className="ml-auto">
-                      <button
-                        title="More options"
-                        className="text-gray-400 hover:text-gray-600 text-lg font-bold"
+                      <Popover
+                        open={openPopoverId === article.id}
+                        onOpenChange={(open) =>
+                          setOpenPopoverId(open ? article.id : null)
+                        }
                       >
-                        &#8942;
-                      </button>
+                        <PopoverTrigger asChild>
+                          <li
+                            title="More options"
+                            className="bb-icon-ellipsis-h list-none text-3xl cursor-pointer   bb-icon-l bb-icon-ellipsis-h"
+                          ></li>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-56 p-2">
+                          <div className="flex flex-col gap-1">
+                            <button
+                              className="flex text-sm items-center  py-2 rounded hover:bg-gray-100 transition text-gray-700"
+                              onClick={() =>
+                                navigate(`/articles/${article.id}`)
+                              }
+                            >
+                              <li className="bb-icon-eye bb-icon-l text-[1.8rem] flex items-center my-auto"></li>
+                              View Post
+                            </button>
+                            <button className="flex gap-[0.2rem] text-sm items-center px-1 py-2  rounded hover:bg-gray-100 transition text-gray-700">
+                              <li className="bb-icon-edit bb-icon-l text-[1.6rem] flex items-center my-auto"></li>
+                              Edit Post
+                            </button>
+                            <button
+                              className="flex text-sm items-center  py-2 rounded hover:bg-gray-100 transition text-gray-700"
+                              onClick={() => deletePostshandler(article.id)}
+                            >
+                              <li className="bb-icon-trash bb-icon-l text-[1.8rem] flex items-center my-auto"></li>
+                              Delete Post
+                            </button>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </div>
                   </div>
 
@@ -302,7 +387,7 @@ const HomePage = () => {
       </div>
 
       {/* Post Popup */}
-      <PostModal
+      <HomePostModal
         isOpen={!!selectedPost}
         article={selectedPost}
         onClose={() => setSelectedPost(null)}

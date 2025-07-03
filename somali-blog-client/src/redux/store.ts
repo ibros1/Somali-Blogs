@@ -10,6 +10,7 @@ import { myArticlesSlice } from "./slices/auth/articles/myArticles";
 import { getMembersSlice } from "./slices/auth/members";
 import { getOneMembersSlice } from "./getOneMember";
 import { updateUserSlice } from "./slices/auth/updateUser";
+import { deleteArticleSlice } from "./slices/auth/articles/deleteArticle";
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     myArticlesSlice: myArticlesSlice.reducer,
     getMembersSlice: getMembersSlice.reducer,
     getOneMembersSlice: getOneMembersSlice.reducer,
+    deleteArticleSlice: deleteArticleSlice.reducer,
   },
   devTools: true,
 });

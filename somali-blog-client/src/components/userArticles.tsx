@@ -9,20 +9,31 @@ import {
   FaShare,
 } from "react-icons/fa";
 import { HiDotsHorizontal } from "react-icons/hi";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 const UserArticles = () => {
   const userArticlesState = useSelector(
     (state: RootState) => state.getOneMembersSlice
   );
   const navigate = useNavigate();
-  const articles = userArticlesState.data?.articles || [];
+  const articles = userArticlesState.data?.articles ?? [];
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});
-
+  const sortedArticles = articles
+    ? articles
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )
+    : [];
   const toggleExpand = (id: number) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  if (!articles.length) {
+  if (!sortedArticles.length) {
     return (
       <div className="text-center text-gray-500 py-20 flex flex-col items-center gap-4">
         <FaRegFileAlt size={40} className="text-blue-400" />
@@ -34,7 +45,7 @@ const UserArticles = () => {
   return (
     <div className="min-h-screen py-10">
       <div className="max-w-2xl mx-auto space-y-6 px-4">
-        {articles.map((article) => {
+        {sortedArticles.map((article) => {
           const isExpanded = expanded[article.id];
           const isLong = article.content.length > 500;
 
@@ -55,7 +66,7 @@ const UserArticles = () => {
                     {article.user.fullname}
                   </h3>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    {new Date(article.created_at).toLocaleString()}
+                    {`${dayjs(article.created_at).toNow(true)} ago`}
                   </p>
                 </div>
                 <button className="text-gray-500 hover:text-gray-700">

@@ -66,7 +66,7 @@ const Login = () => {
             className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
             placeholder="Enter your Email"
             onChange={formik.handleChange}
-            value={formik.values.email}
+            value={formik.values.email.toLowerCase()}
             onBlur={formik.handleBlur}
           />
           <p className="text-xs text-red-500 font-bold mt-1">

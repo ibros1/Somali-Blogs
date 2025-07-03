@@ -85,3 +85,24 @@ export interface Article {
     profilePhoto: string;
   };
 }
+
+// delete article interface
+
+export interface iDeletedArticleResponseInterface {
+  isSuccess: boolean;
+  message: string;
+  deletedPost: {
+    id: number;
+    title: string;
+    content: string;
+    is_published: boolean;
+    created_at: Date;
+    updated_at: Date;
+    user_id: number;
+    user: {
+      fullname: string;
+      email: string;
+      role: string;
+    };
+  };
+}

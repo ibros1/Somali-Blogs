@@ -1,11 +1,7 @@
 import type { RootState } from "@/redux/store";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-
-dayjs.extend(relativeTime);
 
 interface PostModalProps {
   isOpen: boolean;
@@ -24,7 +20,7 @@ interface PostModalProps {
     user?: { fullname?: string; profilePhoto?: string }
   ) => void;
 }
-const PostModal: React.FC<PostModalProps> = ({
+const HomePostModal: React.FC<PostModalProps> = ({
   isOpen,
   onClose,
   article,
@@ -35,12 +31,12 @@ const PostModal: React.FC<PostModalProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null); // modal container ref
 
   const getArticleDetailState = useSelector(
-    (state: RootState) => state.getArticleDetailSlice
+    (state: RootState) => state.getArticleSlice
   );
-
-  const post = getArticleDetailState.posts.article;
   // const user = getArticleDetailState.posts?.article?.user;
-  const userId = getArticleDetailState.posts?.article?.user_id;
+  const userId = getArticleDetailState.data?.articles?.map(
+    (article) => article.user_id
+  );
 
   useEffect(() => {
     if (!contentRef.current) return;
@@ -96,7 +92,7 @@ const PostModal: React.FC<PostModalProps> = ({
         </button>
 
         {/* User Info */}
-        <div className="flex items-center gap-3 ">
+        <div className="flex items-center gap-3 mb-4">
           <img
             src={article.user?.profilePhoto || "/default-avatar.png"}
             alt="author"
@@ -116,9 +112,6 @@ const PostModal: React.FC<PostModalProps> = ({
             </p>
           </div>
         </div>
-        <div className="px-[50px] text-sm pb-2 pt-1 text-gray-500 -mt-4">
-          <p> {`${dayjs(post.created_at).toNow(true)} ago.`} </p>
-        </div>
 
         <h2 className="text-xl font-bold mb-4">{article.title}</h2>
         <div
@@ -131,4 +124,4 @@ const PostModal: React.FC<PostModalProps> = ({
   );
 };
 
-export default PostModal;
+export default HomePostModal;

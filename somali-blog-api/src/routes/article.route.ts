@@ -10,6 +10,7 @@ import {
   getOneArticle,
   getOneMembersArticles,
 } from "../controllers/article.controller";
+import { authorize } from "../../middlewares/authorize.middleware";
 const router = Router();
 
 router.post(
@@ -24,5 +25,10 @@ router.get("/my-articles", authenticate, getMyArticles);
 router.get("/list", getAllArticles);
 router.get("/:articleId", getOneArticle);
 router.get("/users/:userId", getOneMembersArticles);
-router.delete("/delete/:articleId", deleteArticle);
+router.delete(
+  "/delete/:articleId",
+  authenticate,
+  authorize(["admin"]),
+  deleteArticle
+);
 export default router;

@@ -2,6 +2,10 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { useNavigate } from "react-router-dom";
 import { FaRegThumbsUp, FaRegCommentDots, FaShare } from "react-icons/fa";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 const MyArticles = () => {
   const myArticlesState = useSelector(
@@ -36,7 +40,7 @@ const MyArticles = () => {
                 {article.user?.fullname || "You"}
               </p>
               <p className="text-xs text-gray-500">
-                {new Date(article.created_at).toLocaleDateString()}
+                {`${dayjs(article.created_at).toNow(true)} ago`}
               </p>
             </div>
           </div>
